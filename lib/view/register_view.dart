@@ -1,4 +1,4 @@
-
+import 'package:firebaseproject/view/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -31,49 +31,69 @@ class _RegisterViewState extends State<RegisterView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text("Register"),
         backgroundColor: Colors.green,
       ),
-      body: FutureBuilder(
-          future: Firebase.initializeApp(),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.done:
-                return Column(
-                  children: [
-                    TextField(
-                      controller: _email,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(hintText: 'Email'),
-                    ),
-                    TextField(
-                      controller: _password,
-                      obscureText: true,
-                      enableSuggestions: false,
-                      autocorrect: false,
-                      decoration: InputDecoration(hintText: 'password'),
-                    ),
-                    TextButton(
-                        onPressed: () async {
-                          try {
-                            final email = _email.text;
-                            final password = _password.text;
-                            final userCredential = await FirebaseAuth.instance
-                                .createUserWithEmailAndPassword(
-                                    email: email, password: password);
+      body: Column(
+        children: [
+          FutureBuilder(
+              future: Firebase.initializeApp(),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.done:
+                    return Column(
+                      children: [
+                        TextField(
+                          controller: _email,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(hintText: 'Email'),
+                        ),
+                        TextField(
+                          controller: _password,
+                          obscureText: true,
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          decoration: InputDecoration(hintText: 'password'),
+                        ),
+                        TextButton(
+                            onPressed: () async {
+                              try {
+                                final email = _email.text;
+                                final password = _password.text;
+                                final userCredential = await FirebaseAuth
+                                    .instance
+                                    .createUserWithEmailAndPassword(
+                                        email: email, password: password);
 
-                            print(userCredential);
-                          } on FirebaseAuthException catch (e) {
-                            _emailAlreadyInUseAlert(e.code);
-                          }
-                        },
-                        child: Text('Register'))
-                  ],
-                );
-              default:
-                return const Text('loading');
-            }
-          }),
+                                print(userCredential);
+                              } on FirebaseAuthException catch (e) {
+                                _emailAlreadyInUseAlert(e.code);
+                              }
+                            },
+                            child: Text('Register'))
+                      ],
+                    );
+                  default:
+                    return const Text('loading');
+                }
+              }),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Already register?'),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return const LoginView();
+                    }));
+                  },
+                  child: const Text('Login here'))
+            ],
+          )
+        ],
+      ),
     );
   }
 

@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebaseproject/view/login_view.dart';
 import 'package:firebaseproject/view/register_view.dart';
+import 'package:firebaseproject/view/verify_email.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -9,7 +11,7 @@ void main() async {
   // Initialize Firebase before running the app
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: HomePage(),
+    home: LoginView(),
   ));
 }
 
@@ -38,7 +40,8 @@ class _HomePageState extends State<HomePage> {
                 if (currentUser?.emailVerified ?? false) {
                   verfied = 'You are a verified user';
                 } else {
-                  verfied = 'You are not a verfied user';
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => VerifyEmailView()));
                 }
                 return Text(verfied);
               default:
