@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebaseproject/view/note_view.dart';
 import 'package:firebaseproject/view/register_view.dart';
 import 'package:flutter/material.dart';
 
@@ -66,6 +67,10 @@ class _LoginViewState extends State<LoginView> {
                                     .instance
                                     .signInWithEmailAndPassword(
                                         email: email, password: password);
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(builder: (context) {
+                                  return NoteView();
+                                }));
                               } on FirebaseAuthException catch (e) {
                                 if (e.code == 'invalid-credential') {
                                   print('kassahun user is not found');
