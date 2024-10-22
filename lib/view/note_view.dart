@@ -1,11 +1,9 @@
-
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebaseproject/enums/menu_action.dart';
+import 'package:firebaseproject/services/auth/auth_service.dart';
 import 'package:firebaseproject/view/login_view.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
-
-enum MenuAction { logout }
 class NoteView extends StatelessWidget {
   const NoteView({super.key});
 
@@ -23,7 +21,7 @@ class NoteView extends StatelessWidget {
             devtools.log(shouldLogout.toString());
 
             if (shouldLogout) {
-              FirebaseAuth.instance.signOut();
+              AuthService.firebase().logOut();
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return const LoginView();
               }));
@@ -39,7 +37,6 @@ class NoteView extends StatelessWidget {
     );
   }
 }
-
 
 Future<bool> showLogoutDialog(BuildContext context) {
   return showDialog<bool>(

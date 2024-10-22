@@ -1,9 +1,9 @@
+import 'package:firebaseproject/services/auth/auth_expcetions.dart';
+import 'package:firebaseproject/services/auth/auth_service.dart';
 import 'package:firebaseproject/utilities/show_error_dialog.dart';
 import 'package:firebaseproject/view/login_view.dart';
 import 'package:firebaseproject/view/verify_email.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -40,7 +40,7 @@ class _RegisterViewState extends State<RegisterView> {
       body: Column(
         children: [
           FutureBuilder(
-              future: Firebase.initializeApp(),
+              future: AuthService.firebase().initialize(),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.done:
@@ -64,18 +64,24 @@ class _RegisterViewState extends State<RegisterView> {
                               try {
                                 final email = _email.text;
                                 final password = _password.text;
-                                await FirebaseAuth.instance
-                                    .createUserWithEmailAndPassword(
-                                        email: email, password: password);
-                                final user = FirebaseAuth.instance.currentUser;
-                                user?.sendEmailVerification();
+                                await AuthService.firebase().createUser(
+                                    email: email, password: password);
+
+                                AuthService.firebase().sendEmailVerification();
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) =>
                                         const VerifyEmailView()));
-                              } on FirebaseAuthException catch (e) {
-                                showErrorDialog(context, e.code);
-                              } catch (e) {
-                                showErrorDialog(context, e.toString());
+                              } on WrongPasswordAuthException {
+                                await showErrorDialog(context, 'Weak password');
+                              } on EmailAlreadyInUseAuthExpcetion {
+                                await showErrorDialog(
+                                    context, 'Email already in use');
+                              } on InvalidEmailAuthException {
+                                await showErrorDialog(
+                                    context, 'Please enter valid email');
+                              } on GenericAuthExpcetion {
+                                await showErrorDialog(
+                                    context, 'Failed to register');
                               }
                             },
                             child: const Text('Register'))

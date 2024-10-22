@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firebaseproject/services/auth/auth_expcetions.dart';
+import 'package:firebaseproject/services/auth/auth_service.dart';
 import 'package:firebaseproject/utilities/show_error_dialog.dart';
 import 'package:firebaseproject/view/note_view.dart';
 import 'package:firebaseproject/view/register_view.dart';
@@ -41,7 +41,7 @@ class _LoginViewState extends State<LoginView> {
       body: Column(
         children: [
           FutureBuilder(
-              future: Firebase.initializeApp(),
+              future: AuthService.firebase().initialize(),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.done:
@@ -65,32 +65,29 @@ class _LoginViewState extends State<LoginView> {
                               final email = _email.text;
                               final password = _password.text;
                               try {
-                               await FirebaseAuth
-                                    .instance
-                                    .signInWithEmailAndPassword(
-                                        email: email, password: password);
-
-                                final user = FirebaseAuth.instance.currentUser;
-                                if(user?.emailVerified ?? false){
-                                       Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (context) {
-                                  return const NoteView();
-                                }));
+                                await AuthService.firebase()
+                                    .logIn(email: email, password: password);
+                                final user = AuthService.firebase().currentUser;
+                                if (user?.isEmailVerified ?? false) {
+                                  Navigator.of(context).push(
+                                      MaterialPageRoute(builder: (context) {
+                                    return const NoteView();
+                                  }));
+                                } else {
+                                  Navigator.of(context).push(
+                                      MaterialPageRoute(builder: (context) {
+                                    return const VerifyEmailView();
+                                  }));
                                 }
-
-
-                                else
-                                {
-                                     Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (context) {
-                                  return const VerifyEmailView();
-                                }));
-                                }
-                             
-                              } on FirebaseException catch (e) {
-                                await showErrorDialog(context, e.code);
-                              } catch (e) {
-                                await showErrorDialog(context, e.toString());
+                              } on UserNotFoundAuthException {
+                                await showErrorDialog(
+                                    context, 'User not found');
+                              } on WrongPasswordAuthException {
+                                await showErrorDialog(
+                                    context, 'Wrong credential');
+                              } on GenericAuthExpcetion {
+                                await showErrorDialog(
+                                    context, 'Authentication Error');
                               }
                             },
                             child: const Text('Login'))
