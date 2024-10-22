@@ -4,12 +4,17 @@ import 'package:firebaseproject/services/auth/auth_user.dart';
 import 'package:firebaseproject/services/auth/firebase_auth_provider.dart';
 
 class AuthService implements CustomAuthProvider {
-  CustomAuthProvider authProvider;
-  AuthService({
+final CustomAuthProvider authProvider;
+
+const AuthService({
     required this.authProvider,
   });
+
+
   factory AuthService.firebase() =>
       AuthService(authProvider: FirebaseAuthProvider());
+
+
   @override
   Future<AuthUser> createUser({required String email, required password}) =>
       authProvider.createUser(email: email, password: password);
