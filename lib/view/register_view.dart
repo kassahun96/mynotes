@@ -1,4 +1,6 @@
+import 'package:firebaseproject/utilities/show_error_dialog.dart';
 import 'package:firebaseproject/view/login_view.dart';
+import 'package:firebaseproject/view/verify_email.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -32,7 +34,7 @@ class _RegisterViewState extends State<RegisterView> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("Register"),
+        title: const Text("Register"),
         backgroundColor: Colors.green,
       ),
       body: Column(
@@ -47,31 +49,36 @@ class _RegisterViewState extends State<RegisterView> {
                         TextField(
                           controller: _email,
                           keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(hintText: 'Email'),
+                          decoration: const InputDecoration(hintText: 'Email'),
                         ),
                         TextField(
                           controller: _password,
                           obscureText: true,
                           enableSuggestions: false,
                           autocorrect: false,
-                          decoration: InputDecoration(hintText: 'password'),
+                          decoration:
+                              const InputDecoration(hintText: 'password'),
                         ),
                         TextButton(
                             onPressed: () async {
                               try {
                                 final email = _email.text;
                                 final password = _password.text;
-                                final userCredential = await FirebaseAuth
-                                    .instance
+                                await FirebaseAuth.instance
                                     .createUserWithEmailAndPassword(
                                         email: email, password: password);
-
-                                print(userCredential);
+                                final user = FirebaseAuth.instance.currentUser;
+                                user?.sendEmailVerification();
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        const VerifyEmailView()));
                               } on FirebaseAuthException catch (e) {
-                                _emailAlreadyInUseAlert(e.code);
+                                showErrorDialog(context, e.code);
+                              } catch (e) {
+                                showErrorDialog(context, e.toString());
                               }
                             },
-                            child: Text('Register'))
+                            child: const Text('Register'))
                       ],
                     );
                   default:
@@ -95,15 +102,5 @@ class _RegisterViewState extends State<RegisterView> {
         ],
       ),
     );
-  }
-
-  Future _emailAlreadyInUseAlert(String errorMessage) {
-    return showDialog(
-        context: context,
-        builder: (_) {
-          return AlertDialog(
-            title: Text(errorMessage),
-          );
-        });
   }
 }

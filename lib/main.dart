@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebaseproject/view/login_view.dart';
 import 'package:firebaseproject/view/note_view.dart';
-import 'package:firebaseproject/view/verify_email.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -16,6 +15,8 @@ void main() async {
 }
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -33,7 +34,7 @@ class _HomePageState extends State<HomePage> {
               case ConnectionState.done:
                 final currentUser = FirebaseAuth.instance.currentUser;
                 if (currentUser != null) {
-                  if (currentUser?.emailVerified ?? false) {
+                  if (currentUser.emailVerified) {
                     return NoteView();
                   } else {
                     return LoginView();

@@ -15,7 +15,7 @@ class NoteView extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.green,
-        title: Text('Note view'),
+        title: const Text('Note view'),
         centerTitle: true,
         actions: [
           PopupMenuButton<MenuAction>(onSelected: (value) async {
@@ -25,7 +25,7 @@ class NoteView extends StatelessWidget {
             if (shouldLogout) {
               FirebaseAuth.instance.signOut();
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return LoginView();
+                return const LoginView();
               }));
             }
           }, itemBuilder: (context) {
