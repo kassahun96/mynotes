@@ -31,21 +31,20 @@ void main() {
 
     test('Create user account should delegate to login user', () async {
       final invalidEmail =
-          await provider.createUser(email: 'foo@bar.com', password: 'pass');
-      expect(invalidEmail,
-          throwsA(const TypeMatcher<UserNotFoundAuthException>()));
+           provider.createUser(email: 'foo@bar.com', password: 'pass');
+      expect(invalidEmail,   throwsA(const TypeMatcher<UserNotFoundAuthException>()));
 
-      final badPassword = await provider.createUser(
+      final badPassword =  provider.createUser(
           email: 'someone@gmail.com', password: 'foobar');
       expect(badPassword,
           throwsA(const TypeMatcher<WrongPasswordAuthException>()));
-      final user = await provider.currentUser;
+      final user = provider.currentUser;
 
       expect(provider.currentUser, user);
       expect(user?.isEmailVerified, false);
     });
 
-    test('login user should be verified', () {
+    test('login user should be verified', () async{
       provider.sendEmailVerification();
       final user = provider.currentUser;
       expect(user, isNotNull);
@@ -109,7 +108,7 @@ class MockeAuthProvider implements CustomAuthProvider {
   }
 
   @override
-  Future<void> sendEmailVerification() async {
+  Future<void> sendEmailVerification() async { 
     if (!_isInitialized) throw NotInitiaizedException();
     final user = _user;
     if (user == null) throw UserNotFoundAuthException();
