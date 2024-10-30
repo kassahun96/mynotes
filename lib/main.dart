@@ -1,14 +1,16 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-import 'package:firebaseproject/services/auth/auth_service.dart';
-import 'package:firebaseproject/view/login_view.dart';
-import 'package:firebaseproject/view/note/note_view.dart';
 import 'package:flutter/material.dart';
+
+import 'services/auth/auth_service.dart';
+import 'view/login_view.dart';
+import 'view/note/note_view.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Initialize Firebase before running the app
+  AuthService.firebase().initialize();
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: HomePage(),
+    home: NoteView(),
   ));
 }
 
@@ -40,7 +42,6 @@ class _HomePageState extends State<HomePage> {
                 } else {
                   return LoginView();
                 }
-
               default:
                 return const Text('loading');
             }

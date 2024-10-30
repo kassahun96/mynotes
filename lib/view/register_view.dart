@@ -1,6 +1,6 @@
 import 'package:firebaseproject/services/auth/auth_expcetions.dart';
 import 'package:firebaseproject/services/auth/auth_service.dart';
-import 'package:firebaseproject/utilities/show_error_dialog.dart';
+import 'package:firebaseproject/utilities/dialogs/error_dialog.dart';
 import 'package:firebaseproject/view/login_view.dart';
 import 'package:firebaseproject/view/verify_email.dart';
 import 'package:flutter/material.dart';

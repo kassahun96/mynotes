@@ -1,8 +1,10 @@
-import 'package:firebaseproject/services/auth/auth_service.dart';
-import 'package:firebaseproject/services/crud/note_services.dart';
+import '../../services/auth/auth_service.dart';
+import '../../services/crud/note_services.dart';
 import 'package:flutter/material.dart';
 
 class NewNoteView extends StatefulWidget {
+  const NewNoteView({super.key});
+
   @override
   State<NewNoteView> createState() => _NewNoteViewState();
 }
@@ -70,6 +72,7 @@ class _NewNoteViewState extends State<NewNoteView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green,
         title: const Text('New Note'),
       ),
       body: FutureBuilder(
@@ -77,7 +80,7 @@ class _NewNoteViewState extends State<NewNoteView> {
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
-              _note = snapshot.data as DatabaseNote;
+              _note = snapshot.data;
               _setupTextControllerListener();
               return TextField(
                 controller: _textEditingController,

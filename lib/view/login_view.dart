@@ -1,6 +1,7 @@
+import 'package:firebaseproject/utilities/dialogs/error_dialog.dart';
+
 import '../services/auth/auth_expcetions.dart';
 import '../services/auth/auth_service.dart';
-import '../utilities/show_error_dialog.dart';
 import 'note/note_view.dart';
 import 'register_view.dart';
 import 'verify_email.dart';
