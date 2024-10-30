@@ -71,8 +71,25 @@ class _NoteViewState extends State<NoteView> {
                     stream: NoteService.instance.allNotes,
                     builder: (context, snapShot) {
                       switch (snapShot.connectionState) {
-                        case ConnectionState.waiting:
-                          return const Text('Waiting for all notes......');
+                        case ConnectionState.done:
+                          final allNotes = snapShot.data as List<DatabaseNote>;
+                          if (snapShot.hasData) {
+                            print(allNotes);
+                            return ListView.builder(
+                                itemCount: allNotes.length,
+                                itemBuilder: (context, index) {
+                                  final note = allNotes[index];
+                                  return Text(
+                                    note.text,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis, 
+                                  );
+                                });
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
                         default:
                           return const CircularProgressIndicator();
                       }

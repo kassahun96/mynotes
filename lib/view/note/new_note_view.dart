@@ -43,7 +43,7 @@ class _NewNoteViewState extends State<NewNoteView> {
   void _deleteNoteIfTextIsEmpty() {
     final note = _note;
     if (_textEditingController.text.isEmpty && note != null) {
-      NoteService.instance.deleteNote(id: note!.id);
+      NoteService.instance.deleteNote(id: note.id);
     }
   }
 

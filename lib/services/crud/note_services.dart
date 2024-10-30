@@ -13,11 +13,15 @@ const String emailColumn = 'email';
 
 class NoteService {
   List<DatabaseNote> _notes = [];
-  //create an instance of the class inside the class then use it throught the 
-  NoteService._sharedInstance();
+  //create an instance of the class inside the class then use it throught the
+  late StreamController<List<DatabaseNote>> _noteStreamController;
+  NoteService._sharedInstance() {
+    _noteStreamController =
+        StreamController<List<DatabaseNote>>.broadcast(onListen: () {
+      _noteStreamController.sink.add(_notes);
+    });
+  }
   static final NoteService instance = NoteService._sharedInstance();
-  final _noteStreamController =
-      StreamController<List<DatabaseNote>>.broadcast();
   Stream<List<DatabaseNote>> get allNotes => _noteStreamController.stream;
   Future<void> _cacheNotes() async {
     final allNotes = await getAllNotes();
@@ -81,7 +85,6 @@ class NoteService {
       _db = null;
     }
   }
-
 
 //Note crud
   Future<DatabaseNote> updateNote(
@@ -179,8 +182,7 @@ class NoteService {
     return note;
   }
 
-
-///User crud
+  ///User crud
   Future<DatabaseUser> getUser({required String email}) async {
     await _ensureDatabaseOpen();
     final db = _getDatabaseOrThrow();
@@ -227,7 +229,6 @@ class NoteService {
       throw CouldNotDeleteUser();
     }
   }
-
 }
 
 @immutable
