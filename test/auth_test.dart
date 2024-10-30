@@ -93,7 +93,7 @@ class MockeAuthProvider implements CustomAuthProvider {
     if (email == 'foo@bar.com') throw UserNotFoundAuthException();
     if (password == 'foobar') throw WrongPasswordAuthException();
     //checking verification
-    const user = AuthUser(isEmailVerified: false);
+    const user = AuthUser(isEmailVerified: false, email: '');
     _user = user;
     //return the user as the future
     return Future.value(user);
@@ -112,7 +112,7 @@ class MockeAuthProvider implements CustomAuthProvider {
     if (!_isInitialized) throw NotInitiaizedException();
     final user = _user;
     if (user == null) throw UserNotFoundAuthException();
-    const newUser = AuthUser(isEmailVerified: true);
+    final newUser = AuthUser(isEmailVerified: true, email: user.email);
     _user = newUser;
   }
 }

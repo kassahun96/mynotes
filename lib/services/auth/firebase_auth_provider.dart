@@ -37,8 +37,9 @@ class FirebaseAuthProvider implements CustomAuthProvider {
   @override
   AuthUser? get currentUser {
     final user = FirebaseAuth.instance.currentUser;
-
+    
     if (user != null) {
+    
       return AuthUser.fromFirebase(user);
     } else {
       return null;

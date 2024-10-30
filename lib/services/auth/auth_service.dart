@@ -14,7 +14,6 @@ const AuthService({
   factory AuthService.firebase() =>
       AuthService(authProvider: FirebaseAuthProvider());
 
-
   @override
   Future<AuthUser> createUser({required String email, required password}) =>
       authProvider.createUser(email: email, password: password);

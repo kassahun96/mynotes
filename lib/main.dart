@@ -1,9 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 import 'package:firebaseproject/services/auth/auth_service.dart';
 import 'package:firebaseproject/view/login_view.dart';
-import 'package:firebaseproject/view/note_view.dart';
+import 'package:firebaseproject/view/note/note_view.dart';
 import 'package:flutter/material.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize Firebase before running the app

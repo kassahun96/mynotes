@@ -1,9 +1,9 @@
-import 'package:firebaseproject/services/auth/auth_expcetions.dart';
-import 'package:firebaseproject/services/auth/auth_service.dart';
-import 'package:firebaseproject/utilities/show_error_dialog.dart';
-import 'package:firebaseproject/view/note_view.dart';
-import 'package:firebaseproject/view/register_view.dart';
-import 'package:firebaseproject/view/verify_email.dart';
+import '../services/auth/auth_expcetions.dart';
+import '../services/auth/auth_service.dart';
+import '../utilities/show_error_dialog.dart';
+import 'note/note_view.dart';
+import 'register_view.dart';
+import 'verify_email.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatefulWidget {
